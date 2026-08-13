@@ -201,21 +201,71 @@ button, input, select, textarea {
   }
 }
 
+.mobile-menu-toggle {
+  display: flex;
+  background: none;
+  border: none;
+  color: var(--primary-navy);
+  cursor: pointer;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 900px) {
+  .mobile-menu-toggle {
+    display: none;
+  }
+}
+
 .nav-links {
   display: none;
-  gap: 24px;
+  flex-direction: column;
+  position: absolute;
+  top: 70px;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  padding: 10px 20px 20px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid var(--border-color);
+  gap: 0;
   font-weight: 500;
+  z-index: 99;
+}
+
+.nav-links.active {
+  display: flex;
+}
+
+.nav-links a {
+  color: var(--text-dark);
+  transition: color 0.2s, background 0.2s;
+  padding: 14px 10px;
+  border-bottom: 1px solid var(--bg-light);
+  display: block;
+}
+
+.nav-links a:last-child {
+  border-bottom: none;
 }
 
 @media (min-width: 900px) {
   .nav-links {
     display: flex;
+    flex-direction: row;
+    position: static;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+    gap: 24px;
   }
-}
-
-.nav-links a {
-  color: var(--text-dark);
-  transition: color 0.2s;
+  .nav-links a {
+    padding: 0;
+    border: none;
+    display: inline;
+  }
 }
 
 .nav-links a:hover {
@@ -442,6 +492,7 @@ button, input, select, textarea {
 /* Sections */
 .section {
   padding: 70px 0;
+  scroll-margin-top: 80px;
 }
 
 .bg-light {

@@ -13,6 +13,8 @@ declare global {
 document.addEventListener('DOMContentLoaded', () => {
   setupConversionTracking();
   setupSmoothScrolling();
+  setupMobileMenu();
+  handleInitialHashScroll();
 });
 
 /**
@@ -97,6 +99,10 @@ function setupSmoothScrolling() {
       const target = document.querySelector(href as string);
       if (target) {
         e.preventDefault();
+        
+        // Update URL hash without jumping
+        history.pushState(null, '', href);
+        
         target.scrollIntoView({
           behavior: 'smooth',
           block: 'start',
@@ -104,4 +110,51 @@ function setupSmoothScrolling() {
       }
     });
   });
+}
+
+/**
+ * Mobile Menu Toggle
+ */
+function setupMobileMenu() {
+  const btn = document.getElementById('mobileMenuBtn');
+  const nav = document.getElementById('navLinks');
+  
+  if (btn && nav) {
+    btn.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('active');
+      });
+    });
+  }
+}
+
+/**
+ * Handle initial scroll based on URL hash (e.g. after refresh or coming from Sitelinks)
+ */
+function handleInitialHashScroll() {
+  const hash = window.location.hash;
+  if (hash && hash !== '#') {
+    // Small timeout to ensure DOM layout is complete before scrolling
+    setTimeout(() => {
+      try {
+        const target = document.querySelector(hash);
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        } else {
+          // Fallback if element not found
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      } catch (e) {
+        // Fallback if hash is invalid selector
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 100);
+  }
 }
