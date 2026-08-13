@@ -390,7 +390,7 @@ button, input, select, textarea {
 /* Hero Section */
 .hero-section {
   position: relative;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 59, 0.85) 100%), url('/images/24athome.jpg') center/cover no-repeat;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 59, 0.85) 100%), url('/images/room-deluxe.jpg') center/cover no-repeat;
   color: #ffffff;
   padding: 70px 0 90px;
   overflow: hidden;
