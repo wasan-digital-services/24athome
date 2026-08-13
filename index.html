@@ -11,19 +11,34 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- ================================================================= -->
-  <!-- GOOGLE ADS CONVERSION TRACKING (gtag.js)                          -->
-  <!-- * คำแนะนำ: เปลี่ยน 'AW-CONVERSION_ID' เป็นรหัส Google Ads ของคุณ    -->
-  <!-- ================================================================= -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-CONVERSION_ID"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18127691604"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    // กำหนดค่า Google Ads Account Tag ID ของคุณที่นี่
-    window.GOOGLE_ADS_ID = 'AW-CONVERSION_ID'; 
-    gtag('config', window.GOOGLE_ADS_ID);
+    gtag('config', 'AW-18127691604');
+  </script>
+  <script>
+    function gtag_report_conversion(url, send_to, target) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          if (target === '_blank') {
+            window.open(url, '_blank');
+          } else {
+            window.location = url;
+          }
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': send_to,
+          'value': 1.0,
+          'currency': 'THB',
+          'event_callback': callback
+      });
+      return false;
+    }
   </script>
 
   <link rel="stylesheet" href="/src/style.css" />
@@ -488,52 +503,6 @@
           </div>
         </div>
 
-        <!-- Contact Form Card -->
-        <div class="contact-form-panel">
-          <div class="form-card">
-            <h3>📝 แบบฟอร์มสอบถาม / สำรองห้องพัก</h3>
-            <p class="form-subtitle">กรอกข้อมูลเพื่อให้เจ้าหน้าที่โรงแรมติดต่อกลับอย่างรวดเร็ว</p>
-
-            <form id="adsContactForm" class="contact-form">
-              <div class="form-group">
-                <label for="fullName">ชื่อ - นามสกุล *</label>
-                <input type="text" id="fullName" name="fullName" placeholder="เช่น คุณสมชาย ใจดี" required />
-              </div>
-
-              <div class="form-group">
-                <label for="phone">เบอร์โทรศัพท์ติดต่อกลับ *</label>
-                <input type="tel" id="phone" name="phone" placeholder="เช่น 0812345678" required />
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="checkIn">วันที่คาดว่าจะเข้าพัก</label>
-                  <input type="date" id="checkIn" name="checkIn" />
-                </div>
-                <div class="form-group">
-                  <label for="stayType">ประเภทการพัก</label>
-                  <select id="stayType" name="stayType">
-                    <option value="daily">รายวัน (Daily)</option>
-                    <option value="monthly">รายเดือน (Long Stay)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="message">ข้อความเพิ่มเติม / ความต้องการพิเศษ</label>
-                <textarea id="message" name="message" rows="3" placeholder="เช่น ต้องการเตียงเดี่ยว / มางานอิมแพ็คเมืองทองธานี"></textarea>
-              </div>
-
-              <button type="submit" class="btn btn-primary btn-block btn-lg" data-conversion="form" data-label="Submit Contact Form">
-                📩 ส่งข้อมูลติดต่อจองห้องพัก
-              </button>
-
-              <div class="form-privacy-note">
-                🔒 ข้อมูลของคุณเป็นความลับ ใช้เฉพาะสำหรับการติดต่อกลับเรื่องห้องพักเท่านั้น
-              </div>
-            </form>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -567,6 +536,6 @@
     </div>
   </div>
 
-  <script type="module" src="/src/main.js"></script>
+  <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

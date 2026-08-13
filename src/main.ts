@@ -2,19 +2,25 @@
  * 24@Home Hotel - Google Ads Conversion Tracking & Interactive Logic
  */
 
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+    gtag_report_conversion?: (url: string, send_to: string, target: string | null) => boolean;
+  }
+}
+
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
   setupConversionTracking();
-  setupContactForm();
   setupSmoothScrolling();
 });
 
 /**
  * Google Ads Conversion Tracker Helper
- * @param {string} action - 'call', 'line', 'map', 'form', 'link'
+ * @param {string | null} action - 'call', 'line', 'map', 'form', 'link'
  * @param {string} label - Unique identifier label for Google Ads analytics
  */
-function trackConversion(action, label) {
+function trackConversion(action: string | null, label: string) {
   console.log(`[Google Ads Conversion Tracked] Action: ${action} | Label: ${label}`);
 
   if (typeof window.gtag === 'function') {
@@ -24,14 +30,6 @@ function trackConversion(action, label) {
       event_label: label,
       value: 1.0,
     });
-
-    // If specific Google Ads conversion Send_To label is provided:
-    /*
-    window.gtag('event', 'conversion', {
-      'send_to': `${window.GOOGLE_ADS_ID || 'AW-CONVERSION_ID'}/YOUR_CONVERSION_LABEL`,
-      'event_label': label
-    });
-    */
   }
 }
 
@@ -45,8 +43,18 @@ function setupConversionTracking() {
     el.addEventListener('click', (e) => {
       const action = el.getAttribute('data-conversion');
       const label = el.getAttribute('data-label') || 'General Click';
+      const url = el.getAttribute('href');
+      const target = el.getAttribute('target');
 
-      trackConversion(action, label);
+      if (action === 'call' && typeof window.gtag_report_conversion === 'function' && url) {
+        e.preventDefault();
+        window.gtag_report_conversion(url, 'AW-18127691604/fAeFCPLn-uAcENS--sND', target);
+      } else if (action === 'line' && typeof window.gtag_report_conversion === 'function' && url) {
+        e.preventDefault();
+        window.gtag_report_conversion(url, 'AW-18127691604/29UjCPjQ--AcENS--sND', target);
+      } else {
+        trackConversion(action, label);
+      }
 
       // Visual Toast Feedback for Line / Call
       if (action === 'line') {
@@ -59,40 +67,10 @@ function setupConversionTracking() {
 }
 
 /**
- * Setup Contact Us Form Logic
- */
-function setupContactForm() {
-  const form = document.getElementById('adsContactForm');
-  if (!form) return;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const fullName = document.getElementById('fullName')?.value.trim();
-    const phone = document.getElementById('phone')?.value.trim();
-    const checkIn = document.getElementById('checkIn')?.value;
-    const stayType = document.getElementById('stayType')?.value;
-    const message = document.getElementById('message')?.value.trim();
-
-    if (!fullName || !phone) {
-      showToast('กรุณากรอกชื่อและเบอร์โทรศัพท์ติดต่อกลับให้ครบถ้วน');
-      return;
-    }
-
-    // Trigger Form Conversion Event
-    trackConversion('form', `Form Submit: ${fullName} (${phone})`);
-
-    // Reset Form & Show Success Feedback
-    form.reset();
-    showToast('✅ ข้อมูลของคุณถูกส่งเรียบร้อย! เจ้าหน้าที่โรงแรมจะติดต่อกลับด่วนที่สุดครับ');
-  });
-}
-
-/**
  * Toast Notification Utility
  */
-let toastTimeout;
-function showToast(message) {
+let toastTimeout: number;
+function showToast(message: string) {
   const toast = document.getElementById('toastNotification');
   const toastText = document.getElementById('toastMessage');
 
@@ -102,7 +80,7 @@ function showToast(message) {
   toast.classList.remove('hidden');
 
   clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(() => {
+  toastTimeout = window.setTimeout(() => {
     toast.classList.add('hidden');
   }, 4000);
 }
@@ -112,11 +90,11 @@ function showToast(message) {
  */
 function setupSmoothScrolling() {
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener('click', function (e) {
+    anchor.addEventListener('click', function (this: HTMLAnchorElement, e: Event) {
       const href = this.getAttribute('href');
       if (href === '#') return;
 
-      const target = document.querySelector(href);
+      const target = document.querySelector(href as string);
       if (target) {
         e.preventDefault();
         target.scrollIntoView({
