@@ -60,7 +60,7 @@ function setupConversionTracking() {
       if (action === 'line') {
         showToast('กำลังเปิดแอปพลิเคชัน Line เพื่อติดต่อ 24@Home Hotel...');
       } else if (action === 'call') {
-        showToast('กำลังเชื่อมต่อสายโทรหา 081-9888-544 / 02-582-2255...');
+        showToast('กำลังเชื่อมต่อสายโทรหา 081-9888-544...');
       }
     });
   });
